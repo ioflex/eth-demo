@@ -10,6 +10,6 @@ Download here: https://truffleframework.com/ganache
 Download here: https://nodejs.org/en/
 
 ### Truffle Suite
-Run command: `npm intall truffle@latest -g`
+Run command: `npm install truffle@latest -g`
 
 Currently I am using Visual Studio Code (vscode) with the solidity extension by Juan Blanco (v0.0.56).
