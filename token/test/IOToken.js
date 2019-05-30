@@ -118,6 +118,9 @@ contract('IOToken', function(accounts){
             return base.balanceOf(toAccount);
         }).then(function(balance){
             assert.equal(balance.toNumber(), 10, 'adds proper amount to receiving account.');
+            return base.allowace(fromAccount, spendingAccount);
+        }).then(function(remainingAllowance){
+            assert.equal(remainingAllowance.toNumber(), 0, 'deducts the proper amount from the remaining allowance.');
         });
     });
 });
