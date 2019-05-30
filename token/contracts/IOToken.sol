@@ -32,7 +32,21 @@ contract IOToken {
     // *** accessible using instance.balanceOf(address);
     mapping(address => uint256) public balanceOf;
 
+    // *** Delegated Transfer Allowances ***
+    // *** Required for ERC20 standard ***
+    // *** State variable ***
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    // *** Approval event handler ***
+    // *** Required ERC20 standard ***
+    event Approval(
+        address indexed _owner,
+        address indexed _spender,
+        uint256 _value
+    );
+
     // *** Transfer event handler ***
+    // *** Required ERC20 standard ***
     event Transfer(
         address indexed _from,
         address indexed _to,
@@ -52,6 +66,18 @@ contract IOToken {
         totalSupply = _initialSupply;
     }
 
+    // *** Approve function ***
+    // *** Required by ERC20 standard ***
+    function approve(address _spender, uint256 _value) public returns(bool success){
+        // *** set the allowance value ***
+        allowance[msg.sender][_spender] = _value;
+        // *** trigger approval event ***
+        emit Approval(msg.sender, _spender, _value);
+
+        // *** Return true if the function has executed this far. ***
+        return true;
+    }
+
     // *** Transfer function ***
     // *** Required by ERC20 standard ***
     // *** Exception: if account doesn't have enough supply for xfer ***
@@ -68,6 +94,30 @@ contract IOToken {
 
         // *** Emit the transfer event ***
         emit Transfer(msg.sender, _to, _value);
+
+        // *** Return true if the function has executed this far. ***
+        return true;
+    }
+
+    // *** Transfer from function ***
+    // *** "Delegated" Transfer ***
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
+        // *** Ensure the delegate's allowance is appropriate to transfer ***
+        require(_value <= allowance[_from][msg.sender], "allowance is not large enough to transfer");
+        // *** Ensure the _from account has enough tokens to transfer ***
+        require(_value <= balanceOf[_from], "balance is not available to transfer");
+
+        // *** Deduct balance (_value) from sender ***
+        balanceOf[_from] -= _value;
+
+        // *** Add balance (_value) to receiver ***
+        balanceOf[_to] += _value;
+
+        // *** Update the remaining allowance ***
+        allowance[_from][msg.sender] -= _value;
+
+        // *** Emit the transfer event ***
+        emit Transfer(_from, _to, _value);
 
         // *** Return true if the function has executed this far. ***
         return true;
