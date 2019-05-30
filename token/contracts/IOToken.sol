@@ -101,6 +101,10 @@ contract IOToken {
 
     // *** Transfer from function ***
     // *** "Delegated" Transfer ***
+    // *** Required by ERC20 standard ***
+    // *** Exception: if calling account allowance is not large enough to transfer value. ***
+    // *** Exception: if spending account balance is not large enought to transfer value. ***
+    // *** Returns: boolean ***
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
         // *** Ensure the delegate's allowance is appropriate to transfer ***
         require(_value <= allowance[_from][msg.sender], "allowance is not large enough to transfer");
