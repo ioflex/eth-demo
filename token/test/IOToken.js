@@ -1,10 +1,10 @@
-var IOToken = artifacts.require("./IOToken.sol");
+let IOToken = artifacts.require("./IOToken.sol");
 
 // *** IOToken contract test ***
 // *** Input: Accounts provided by GANASH ***
 contract('IOToken', function(accounts){
     // *** Reference to an instance of the IOToken contract ***
-    var base;
+    let base;
 
     // *** Test initialization of internal contract values ***
     it('initializes the contract with the correct values', function(){
@@ -18,7 +18,7 @@ contract('IOToken', function(accounts){
             assert.equal(symbol, 'IOFT');
             return base.standard();
         }).then(function(standard){
-            assert.equal(standard, "Input Output Flexibility Token v1.0.0")
+            assert.equal(standard, "v0.0.0")
         });
     });
 
@@ -118,7 +118,7 @@ contract('IOToken', function(accounts){
             return base.balanceOf(toAccount);
         }).then(function(balance){
             assert.equal(balance.toNumber(), 10, 'adds proper amount to receiving account.');
-            return base.allowace(fromAccount, spendingAccount);
+            return base.allowance(fromAccount, spendingAccount);
         }).then(function(remainingAllowance){
             assert.equal(remainingAllowance.toNumber(), 0, 'deducts the proper amount from the remaining allowance.');
         });

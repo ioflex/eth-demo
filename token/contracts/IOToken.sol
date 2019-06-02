@@ -18,7 +18,7 @@ contract IOToken {
     // *** Internal standard version of the token ***
     // *** State variable ***
     // *** accessible using instance.standard(); ***
-    string public standard = "Input Output Flexibility Token v1.0.0";
+    string public standard = "v0.0.0";
 
     // *** Total supply of tokens ***
     // *** Required for ERC20 standard ***
